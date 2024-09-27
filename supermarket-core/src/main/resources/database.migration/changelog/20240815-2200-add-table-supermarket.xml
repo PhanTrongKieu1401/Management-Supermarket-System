@@ -1,0 +1,646 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+  <changeSet id="20240815-2312-account-table" author="Phan Kieu">
+    <createTable tableName="account">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="username" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_activated" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_locked_permanent" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_fist_login" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="20240817-2100-address-table" author="Phan Kieu">
+    <createTable tableName="address">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="address_detail" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ward" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="district" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="province" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="20240817-2100-member-table" author="Phan Kieu">
+    <createTable tableName="member">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="first_name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="middle_name" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="last_name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="phone" type="varchar(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="date_of_birth" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="gender" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="role" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="account_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="address_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="member" baseColumnNames="account_id"
+      constraintName="fk_member_account"
+      referencedTableName="account" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="member" baseColumnNames="address_id"
+      constraintName="fk_member_address"
+      referencedTableName="address" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-manager-table" author="Phan Kieu">
+    <createTable tableName="manager">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="manager" baseColumnNames="id"
+      constraintName="fk_manager_member"
+      referencedTableName="member" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-cashier-table" author="Phan Kieu">
+    <createTable tableName="cashier">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="cashier" baseColumnNames="id"
+      constraintName="fk_cashier_member"
+      referencedTableName="member" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-warehouse-manager-table" author="Phan Kieu">
+    <createTable tableName="warehouse_manager">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="warehouse_manager" baseColumnNames="id"
+      constraintName="fk_warehouse_manager_member"
+      referencedTableName="member" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-customer-table" author="Phan Kieu">
+    <createTable tableName="customer">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="member_code" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="point" type="smallint(6)" defaultValue="0">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="customer" baseColumnNames="id"
+      constraintName="fk_customer_member"
+      referencedTableName="member" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-supplier-table" author="Phan Kieu">
+    <createTable tableName="supplier">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="phone" type="varchar(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="address_detail" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ward" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="district" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="province" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_activated" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="20240817-2100-category-table" author="Phan Kieu">
+    <createTable tableName="category">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_activated" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="20240817-2100-product-table" author="Phan Kieu">
+    <createTable tableName="product">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="image" type="mediumtext">
+        <constraints nullable="false"/>
+      </column>
+      <column name="size" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price_sell" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price_import" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="quantity_in_stock" type="int(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="production_batch" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="production_date" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="expire_date" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_activated" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="category_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="product" baseColumnNames="category_id"
+      constraintName="fk_product_category"
+      referencedTableName="category" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-product-discount-table" author="Phan Kieu">
+    <createTable tableName="product_discount">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="discount_sell" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="start_date" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="end_date" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="product_discount" baseColumnNames="product_id"
+      constraintName="fk_product_discount_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-comment-table" author="Phan Kieu">
+    <createTable tableName="comment">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="content" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="parent_comment_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="customer_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="comment" baseColumnNames="customer_id"
+      constraintName="fk_comment_customer"
+      referencedTableName="customer" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="comment" baseColumnNames="product_id"
+      constraintName="fk_comment_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-evaluation-table" author="Phan Kieu">
+    <createTable tableName="evaluation">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="point" type="tinyint(1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="customer_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="evaluation" baseColumnNames="customer_id"
+      constraintName="fk_evaluation_customer"
+      referencedTableName="customer" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="evaluation" baseColumnNames="product_id"
+      constraintName="fk_evaluation_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-voucher-table" author="Phan Kieu">
+    <createTable tableName="voucher">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="voucher_code" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="value" type="float">
+        <constraints nullable="false"/>
+      </column>
+      <column name="conditions_apply" type="float">
+        <constraints nullable="false"/>
+      </column>
+      <column name="release_date" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="expire_date" type="date">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_activated" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="20240817-2100-cart-table" author="Phan Kieu">
+    <createTable tableName="cart">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="cart" baseColumnNames="id"
+      constraintName="fk_cart_customer"
+      referencedTableName="customer" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-product-in-cart-table" author="Phan Kieu">
+    <createTable tableName="product_in_cart">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="quantity" type="int(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cart_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="product_in_cart" baseColumnNames="product_id"
+      constraintName="fk_product_in_cart_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="product_in_cart" baseColumnNames="cart_id"
+      constraintName="fk_product_in_cart_cart"
+      referencedTableName="cart" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-order-table" author="Phan Kieu">
+    <createTable tableName="order">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="payment_method" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="payment_date" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="payment_status" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="order_status" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="transport_fee" type="decimal(7,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="customer_id" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+      <column name="cashier_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="voucher_id" type="varchar(255)">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="order" baseColumnNames="customer_id"
+      constraintName="fk_order_customer"
+      referencedTableName="customer" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="order" baseColumnNames="cashier_id"
+      constraintName="fk_order_cashier"
+      referencedTableName="cashier" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="order" baseColumnNames="voucher_id"
+      constraintName="fk_order_voucher"
+      referencedTableName="voucher" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-product-in-order-table" author="Phan Kieu">
+    <createTable tableName="product_in_order">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="quantity" type="int(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price_sell" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="discount_sell" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price_import" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="order_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="product_in_order" baseColumnNames="product_id"
+      constraintName="fk_product_in_order_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="product_in_order" baseColumnNames="order_id"
+      constraintName="fk_product_in_order_order"
+      referencedTableName="order" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-import-order-table" author="Phan Kieu">
+    <createTable tableName="import_order">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="import_date" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="payment_status" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="manager_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="supplier_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="import_order" baseColumnNames="manager_id"
+      constraintName="fk_import_order_manager"
+      referencedTableName="manager" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="import_order" baseColumnNames="supplier_id"
+      constraintName="fk_import_order_supplier"
+      referencedTableName="supplier" referencedColumnNames="id"/>
+  </changeSet>
+
+  <changeSet id="20240817-2100-product-in-import-order-table" author="Phan Kieu">
+    <createTable tableName="product_in_import_order">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="quantity" type="int(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="price_import" type="decimal(10,1)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="import_order_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="product_in_import_order" baseColumnNames="product_id"
+      constraintName="fk_product_in_import_order_product"
+      referencedTableName="product" referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableName="product_in_import_order" baseColumnNames="import_order_id"
+      constraintName="fk_product_in_import_order_import_order"
+      referencedTableName="import_order" referencedColumnNames="id"/>
+  </changeSet>
+
+<!--  <changeSet id="20240817-2100-voucher-of-customer-table" author="Phan Kieu">-->
+<!--    <createTable tableName="voucher_of_customer">-->
+<!--      <column name="id" type="varchar(255)">-->
+<!--        <constraints primaryKey="true"/>-->
+<!--      </column>-->
+<!--      <column name="created_at" type="datetime">-->
+<!--        <constraints nullable="false"/>-->
+<!--      </column>-->
+<!--      <column name="customer_id" type="varchar(255)">-->
+<!--        <constraints nullable="false"/>-->
+<!--      </column>-->
+<!--      <column name="voucher_id" type="varchar(255)">-->
+<!--        <constraints nullable="false"/>-->
+<!--      </column>-->
+<!--    </createTable>-->
+<!--    <addForeignKeyConstraint baseTableName="voucher_of_customer" baseColumnNames="customer_id"-->
+<!--      constraintName="fk_voucher_of_customer_customer"-->
+<!--      referencedTableName="customer" referencedColumnNames="id"/>-->
+<!--    <addForeignKeyConstraint baseTableName="voucher_of_customer" baseColumnNames="voucher_id"-->
+<!--      constraintName="fk_voucher_of_customer_voucher"-->
+<!--      referencedTableName="voucher" referencedColumnNames="id"/>-->
+<!--  </changeSet>-->
+
+  <changeSet id="20240817-2100-receiver-table" author="Phan Kieu">
+    <createTable tableName="receiver">
+      <column name="id" type="varchar(255)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="full_name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="phone" type="varchar(10)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="address_detail" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ward" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="district" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="province" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated_at" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="order_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="receiver" baseColumnNames="order_id"
+      constraintName="fk_receiver_order"
+      referencedTableName="order" referencedColumnNames="id"/>
+  </changeSet>
+
+<!--  <changeSet id="20240927-0009-change-name-column" author="Phan Kieu">-->
+<!--    <renameColumn tableName="account" oldColumnName="is_activated" newColumnName="is_active"/>-->
+<!--    <renameColumn tableName="supplier" oldColumnName="is_activated" newColumnName="activated_state"/>-->
+<!--    <renameColumn tableName="category" oldColumnName="is_activated" newColumnName="activated_state"/>-->
+<!--    <renameColumn tableName="product" oldColumnName="is_activated" newColumnName="activated_state"/>-->
+<!--    <renameColumn tableName="voucher" oldColumnName="is_activated" newColumnName="activated_state"/>-->
+<!--  </changeSet>-->
+</databaseChangeLog>

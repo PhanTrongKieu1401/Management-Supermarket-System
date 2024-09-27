@@ -1,0 +1,10 @@
+package vn.edu.ptit.supermarket.core_email.constant;
+
+public class BaseEmail {
+
+  public static final String EMAIL_TEMPLATE_PREFIX = "/template/";
+  public static final String EMAIL_TEMPLATE_SUFFIX = ".html";
+  public static final String CONTENT_TYPE_TEXT_HTML = "text/html;charset=\"utf-8\"";
+  public static final String PARAM_TEMPLATE_NAME = "name";
+  public static final String PARAM_TEMPLATE_CONTENT = "content";
+}
