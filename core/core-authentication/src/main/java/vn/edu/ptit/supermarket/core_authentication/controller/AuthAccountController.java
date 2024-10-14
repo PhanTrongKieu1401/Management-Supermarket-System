@@ -49,7 +49,7 @@ public class AuthAccountController {
     log.info("(register)registerRequest: {}", registerRequest);
     authFacadeService.register(registerRequest);
     return BaseResponse.of(HttpStatus.OK.value(), LocalDateTime.now().toString(),
-        "Register successfully!");
+        "Đăng ký thành công!");
   }
 
   @PostMapping("/register/otp/validate")

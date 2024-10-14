@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    Siêu thị Kikimoon
+  </div>
+  <p th:text="'Thông báo của đơn hàng: ' + ${order_id}"></p>
+  <p>Đơn hàng của bạn đã đặt thành công và đang trong quá trình xử lý.</p>
+  <p>Chúng tôi sẽ liên lạc với bạn theo số điện thoại bạn cung cấp.</p>
+  <p>Xin cảm ơn!</p>
+</div>
+</body>
+</html>

@@ -1,16 +1,13 @@
 package vn.edu.ptit.supermarket.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 @Data
 @Entity
@@ -20,15 +17,19 @@ import org.springframework.data.annotation.CreatedDate;
 public class ProductInOrder {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
+
   private int quantity;
+
+  @Column(precision = 10, scale = 1, nullable = false)
   private BigDecimal priceSell;
+
+  @Column(precision = 10, scale = 1, nullable = false)
   private BigDecimal discountSell;
+
+  @Column(precision = 10, scale = 1, nullable = false)
   private BigDecimal priceImport;
+
   private String orderId;
   private String productId;
-
-  @CreatedDate
-  private LocalDateTime createdAt;
 }

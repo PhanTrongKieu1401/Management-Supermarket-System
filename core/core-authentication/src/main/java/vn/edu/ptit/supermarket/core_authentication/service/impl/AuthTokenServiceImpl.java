@@ -16,16 +16,16 @@ import vn.edu.ptit.supermarket.core_authentication.service.AuthTokenService;
 @Component
 public class AuthTokenServiceImpl implements AuthTokenService {
 
-  @Value("${application.authentication.access_token.jwt_secret:N4ND53ndsU}")
+  @Value("${application.authentication.access_token.jwt_secret}")
   private String accessTokenJwtSecret;
 
-  @Value("${application.authentication.access_token.life_time:36000000}")
+  @Value("${application.authentication.access_token.life_time}")
   private Long accessTokenLifeTime;
 
-  @Value("${application.authentication.refresh_token.jwt_secret:N4ND53ndsU}")
+  @Value("${application.authentication.refresh_token.jwt_secret}")
   private String refreshTokenJwtSecret;
 
-  @Value("${application.authentication.refresh_token.life_time:72000000}")
+  @Value("${application.authentication.refresh_token.life_time}")
   private Long refreshTokenLifeTime;
 
   private String generateToken(String subject, Map<String, Object> claims, long tokenLifeTime, String jwtSecret) {
@@ -42,7 +42,7 @@ public class AuthTokenServiceImpl implements AuthTokenService {
     return getClaim(token, Claims::getExpiration, secretKey).after(new Date());
   }
 
-  private <T> T getClaim(String token, Function<Claims, T> claimsResolve, String secretKey) {
+  public <T> T getClaim(String token, Function<Claims, T> claimsResolve, String secretKey) {
     return claimsResolve.apply(getClaims(token, secretKey));
   }
 
@@ -51,9 +51,15 @@ public class AuthTokenServiceImpl implements AuthTokenService {
   }
 
   @Override
-  public String generateAccessToken(String memberId, String email, String username) {
-    log.info("(generateAccessToken)memberId: {}, email: {}, username: {}", memberId, email, username);
+  public Claims getClaimsFromAccessToken(String accessToken) {
+    return Jwts.parser().setSigningKey(accessTokenJwtSecret).parseClaimsJws(accessToken).getBody();
+  }
+
+  @Override
+  public String generateAccessToken(String memberId, String email, String role, String username) {
+    log.info("(generateAccessToken)memberId: {}, email: {}, role: {}, username: {}", memberId, email, role, username);
     var claims = new HashMap<String, Object>();
+    claims.put("role", role);
     claims.put("email", email);
     claims.put("username", username);
     return generateToken(memberId, claims, accessTokenLifeTime, accessTokenJwtSecret);
@@ -68,13 +74,21 @@ public class AuthTokenServiceImpl implements AuthTokenService {
   @Override
   public boolean validateAccessToken(String accessToken, String memberId) {
     log.info("(validateAccessToken)accessToken: {}, memberId: {}", accessToken, memberId);
-    return getSubjectFromAccessToken(accessToken).equals(memberId) && isActiveToken(accessToken, accessTokenJwtSecret);
+    try {
+      String subject = getSubjectFromAccessToken(accessToken);
+      boolean isTokenActive = isActiveToken(accessToken, accessTokenJwtSecret);
+      return subject.trim().equals(memberId.trim()) && isTokenActive;
+    } catch (Exception e) {
+      log.error("Error validating access token: {}", e.getMessage());
+      return false;
+    }
   }
 
   @Override
-  public String generateRefreshToken(String memberId, String email, String username) {
-    log.info("(generateRefreshToken)memberId: {}, email: {}, username: {}", memberId, email, username);
+  public String generateRefreshToken(String memberId, String email, String role, String username) {
+    log.info("(generateRefreshToken)memberId: {}, email: {}, role: {}, username: {}", memberId, email, role, username);
     var claims = new HashMap<String, Object>();
+    claims.put("role", role);
     claims.put("email", email);
     claims.put("username", username);
     return generateToken(memberId, claims, refreshTokenLifeTime, refreshTokenJwtSecret);

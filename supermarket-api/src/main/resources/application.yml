@@ -1,11 +1,11 @@
 application:
   authentication:
     access_token:
-      jwt_secret: "N4ND53ndsU"
-      life_time: "3600000000"
+      jwt_secret: "djhajhdhs"
+      life_time: "86400000"
     refresh_token:
-      jwt_secret: "N4ND53ndsU"
-      life_time: "7200000000"
+      jwt_secret: "djhajhdhs"
+      life_time: "172800000"
 
   i18n:
     resources:
@@ -23,6 +23,12 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
   cache:
     type: redis
   data:
@@ -43,6 +49,14 @@ spring:
             enable: true
     protocol: smtp
     test-connection: false
+  kafka:
+    consumer:
+      enable-auto-commit: false
+      max-poll-records: 1
+    listener:
+      ack-mode: manual
+    producer:
+      retries: 3
 
 springdoc:
   api-docs:
@@ -51,3 +65,16 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+
+server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+ws:
+  applicationPrefix: /app
+  topicPrefix: /topic
+  userDestinationPrefix: /user
+  registerEndpoint: /ws

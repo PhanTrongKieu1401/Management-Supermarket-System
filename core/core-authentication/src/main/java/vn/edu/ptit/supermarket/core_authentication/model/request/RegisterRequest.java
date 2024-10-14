@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import vn.edu.ptit.supermarket.core_authentication.validation.ValidateEmail;
-import vn.edu.ptit.supermarket.core_authentication.validation.ValidateGender;
-import vn.edu.ptit.supermarket.core_authentication.validation.ValidateLocalDate;
 import vn.edu.ptit.supermarket.core_authentication.validation.ValidatePassword;
 import vn.edu.ptit.supermarket.core_authentication.validation.ValidatePhone;
 import vn.edu.ptit.supermarket.core_authentication.validation.ValidateRole;
@@ -42,7 +40,6 @@ public class RegisterRequest {
   @Schema(description = "First name", example = "John")
   private String firstName;
 
-  @NotBlank(message = "Middle name is required")
   @Schema(description = "Middle name", example = "Doe")
   private String middleName;
 
@@ -55,34 +52,8 @@ public class RegisterRequest {
   @Schema(description = "Phone", example = "0123456789")
   private String phone;
 
-  @NotBlank(message = "Date of birth is required")
-  @ValidateLocalDate
-  @Schema(description = "Date of birth", example = "2000-01-01")
-  private String dateOfBirth;
-
-  @NotBlank(message = "Gender is required")
-  @ValidateGender
-  @Schema(description = "Gender", example = "Male")
-  private String gender;
-
   @NotBlank(message = "Role is required")
   @ValidateRole
   @Schema(description = "Role", example = "CUSTOMER")
   private String role;
-
-  @NotBlank(message = "Address detail is required")
-  @Schema(description = "Address detail", example = "123")
-  private String addressDetail;
-
-  @NotBlank(message = "Ward is required")
-  @Schema(description = "Ward", example = "Ward")
-  private String ward;
-
-  @NotBlank(message = "District is required")
-  @Schema(description = "District", example = "District")
-  private String district;
-
-  @NotBlank(message = "Province is required")
-  @Schema(description = "Province", example = "Province")
-  private String province;
 }

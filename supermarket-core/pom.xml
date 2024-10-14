@@ -62,5 +62,10 @@
       <artifactId>core-redis</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>vn.edu.ptit.supermarker</groupId>
+      <artifactId>core-web-socket</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

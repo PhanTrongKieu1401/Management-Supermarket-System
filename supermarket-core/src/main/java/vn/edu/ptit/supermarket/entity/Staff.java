@@ -5,7 +5,7 @@ import jakarta.persistence.Table;
 import vn.edu.ptit.supermarket.core_authentication.entity.Member;
 
 @Entity
-@Table(name = "manager")
-public class Manager extends Member {
+@Table(name = "staff")
+public class Staff extends Member {
 
 }

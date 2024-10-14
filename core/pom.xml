@@ -19,6 +19,7 @@
     <module>core-exception</module>
     <module>core-redis</module>
     <module>core-kafka</module>
+    <module>core-web-socket</module>
   </modules>
 
 </project>

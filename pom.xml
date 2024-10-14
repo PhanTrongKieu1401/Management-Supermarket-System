@@ -27,6 +27,8 @@
 		<lombok.version>1.18.32</lombok.version>
 		<jedis.version>5.1.2</jedis.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<websocket.version>3.3.2</websocket.version>
+		<spring-messaging.version>6.1.11</spring-messaging.version>
 	</properties>
 
 	<dependencies>
@@ -64,6 +66,16 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>${websocket.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>${spring-messaging.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

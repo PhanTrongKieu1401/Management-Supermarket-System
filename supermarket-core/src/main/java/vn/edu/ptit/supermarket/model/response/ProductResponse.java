@@ -13,12 +13,11 @@ public class ProductResponse {
   private BigDecimal discountSell;
   private int quantityInStock;
   private String description;
-  private String productionBatch;
   private double rate;
   private String category;
 
   public ProductResponse(String id, String name, String image, String size, BigDecimal priceSell, BigDecimal discountSell,
-      int quantityInStock, String description, String productionBatch, double rate, String category) {
+      int quantityInStock, String description, double rate, String category) {
     this.id = id;
     this.name = name;
     this.image = image;
@@ -27,7 +26,6 @@ public class ProductResponse {
     this.discountSell = discountSell;
     this.quantityInStock = quantityInStock;
     this.description = description;
-    this.productionBatch = productionBatch;
     this.rate = rate;
     this.category = category;
   }

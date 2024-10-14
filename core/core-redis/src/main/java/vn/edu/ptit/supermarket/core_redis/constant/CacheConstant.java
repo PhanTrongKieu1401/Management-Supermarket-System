@@ -16,4 +16,6 @@ public class CacheConstant {
 
   public static final String RESET_PASSWORD_KEY = "RESET_PASSWORD_KEY";
   public static final String RESET_PASSWORD_OTP_KEY = "RESET_PASSWORD_OTP_KEY";
+
+  public static final String ORDER_KEY = "ORDER_KEY";
 }

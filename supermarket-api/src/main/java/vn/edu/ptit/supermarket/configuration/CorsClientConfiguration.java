@@ -13,6 +13,11 @@ public class CorsClientConfiguration {
   public CorsFilter corsFilter(){
     CorsConfiguration corsConfiguration = new CorsConfiguration();
 
+//    corsConfiguration.addAllowedOriginPattern("http://*");
+//    corsConfiguration.addAllowedOriginPattern("https://*");
+//    corsConfiguration.addAllowedOriginPattern("ws://*");
+//    corsConfiguration.addAllowedOriginPattern("wss://*");
+
     corsConfiguration.addAllowedOrigin("*");
     corsConfiguration.addAllowedMethod("*");
     corsConfiguration.addAllowedHeader("*");

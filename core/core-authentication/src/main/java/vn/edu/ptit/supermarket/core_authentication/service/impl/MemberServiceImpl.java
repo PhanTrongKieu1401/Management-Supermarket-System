@@ -3,12 +3,15 @@ package vn.edu.ptit.supermarket.core_authentication.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import vn.edu.ptit.supermarket.core_authentication.entity.Account;
 import vn.edu.ptit.supermarket.core_authentication.entity.Member;
 import vn.edu.ptit.supermarket.core_authentication.exception.AccountExistedException;
 import vn.edu.ptit.supermarket.core_authentication.exception.AccountNotFoundException;
 import vn.edu.ptit.supermarket.core_authentication.exception.EmailExistedException;
 import vn.edu.ptit.supermarket.core_authentication.model.request.RegisterRequest;
 import vn.edu.ptit.supermarket.core_authentication.model.request.UpdateMemberRequest;
+import vn.edu.ptit.supermarket.core_authentication.model.response.InfoMemberHeaderResponse;
+import vn.edu.ptit.supermarket.core_authentication.model.response.InfoMemberResponse;
 import vn.edu.ptit.supermarket.core_authentication.repository.MemberRepository;
 import vn.edu.ptit.supermarket.core_authentication.service.MemberService;
 
@@ -20,19 +23,19 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   @Transactional
-  public Member create(RegisterRequest registerRequest, String accountId, String addressId) {
-    log.info("(create)email: {}, accountId: {}, addressId: {}", registerRequest.getEmail(), accountId, addressId);
+  public Member create(RegisterRequest registerRequest, Account account, String addressId) {
+    log.info("(create)email: {}, account: {}, addressId: {}", registerRequest.getEmail(), account, addressId);
 
     if(memberRepository.existsByEmail(registerRequest.getEmail())){
       log.error("(create)email: {} already exists", registerRequest.getEmail());
       throw new EmailExistedException(registerRequest.getEmail());
     }
 
-    if(memberRepository.existsByAccountId(accountId)) {
-      log.error("(create)accountId: {} already exists", accountId);
-      throw new AccountExistedException(accountId);
+    if(memberRepository.existsByAccountId(account.getId())) {
+      log.error("(create)accountId: {} already exists", account.getId());
+      throw new AccountExistedException(account.getId());
     }
-    return memberRepository.save(Member.from(registerRequest, accountId, addressId));
+    return memberRepository.save(Member.from(registerRequest, account.getId(), addressId));
   }
 
   @Override
@@ -64,5 +67,17 @@ public class MemberServiceImpl implements MemberService {
   public boolean existsByEmail(String email) {
     log.info("(existsByEmail)email: {}", email);
     return memberRepository.existsByEmail(email);
+  }
+
+  @Override
+  public InfoMemberHeaderResponse getFullName(String memberId) {
+    log.info("(getFullName)memberId: {}", memberId);
+    return memberRepository.getFullName(memberId);
+  }
+
+  @Override
+  public InfoMemberResponse getInfo(String memberId) {
+    log.info("(getInfo)memberId: {}", memberId);
+    return memberRepository.getInfo(memberId);
   }
 }

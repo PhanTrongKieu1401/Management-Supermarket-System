@@ -1,14 +1,21 @@
 package vn.edu.ptit.supermarket.core_authentication.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import vn.edu.ptit.supermarket.core_authentication.model.request.RegisterRequest;
 import vn.edu.ptit.supermarket.core_authentication.model.request.UpdateMemberRequest;
 
@@ -19,18 +26,32 @@ import vn.edu.ptit.supermarket.core_authentication.model.request.UpdateMemberReq
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Member extends BaseEntity{
+@EntityListeners(AuditingEntityListener.class)
+public class Member {
+
+  @Id
+  private String id;
 
   private String firstName;
   private String middleName;
   private String lastName;
   private String email;
+
+  @Column(length = 10, nullable = false)
   private String phone;
   private Date dateOfBirth;
   private String gender;
   private String role;
   private String accountId;
   private String addressId;
+
+  @Column(nullable = false, updatable = false)
+  @CreatedDate
+  private LocalDateTime createdAt;
+
+  @Column(nullable = false)
+  @LastModifiedDate
+  private LocalDateTime lastUpdatedAt;
 
   public static Member from(String email, String accountId) {
     var member = new Member();
@@ -41,13 +62,12 @@ public class Member extends BaseEntity{
 
   public static Member from(RegisterRequest registerRequest, String accountId, String addressId) {
     var member = new Member();
+    member.setId("M" + System.currentTimeMillis());
     member.setEmail(registerRequest.getEmail());
     member.setFirstName(registerRequest.getFirstName());
     member.setMiddleName(registerRequest.getMiddleName());
     member.setLastName(registerRequest.getLastName());
     member.setPhone(registerRequest.getPhone());
-    member.setDateOfBirth(Date.valueOf(registerRequest.getDateOfBirth()));
-    member.setGender(registerRequest.getGender());
     member.setRole(registerRequest.getRole());
     member.setAccountId(accountId);
     member.setAddressId(addressId);

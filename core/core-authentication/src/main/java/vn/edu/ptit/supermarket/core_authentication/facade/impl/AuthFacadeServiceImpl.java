@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.supermarket.core_authentication.constant.AccountLockedTime;
 import vn.edu.ptit.supermarket.core_authentication.constant.ResendOtpType;
 import vn.edu.ptit.supermarket.core_authentication.entity.Account;
-import vn.edu.ptit.supermarket.core_authentication.entity.Address;
 import vn.edu.ptit.supermarket.core_authentication.entity.Member;
 import vn.edu.ptit.supermarket.core_authentication.exception.AccountLockedException;
 import vn.edu.ptit.supermarket.core_authentication.exception.AccountLockedTemporaryException;
@@ -122,11 +121,13 @@ public class AuthFacadeServiceImpl implements AuthFacadeService {
         CryptUtil.getPasswordEncoder()
             .encode(registerRequest.getPassword()));
 
-    var address = addressService.create(
-        Address.of(registerRequest.getAddressDetail(), registerRequest.getWard(),
-            registerRequest.getDistrict(), registerRequest.getProvince()));
+//    var address = addressService.create(
+//        Address.of(registerRequest.getAddressDetail(), registerRequest.getWard(),
+//            registerRequest.getDistrict(), registerRequest.getProvince()));
 
-    memberService.create(registerRequest, account.getId(), address.getId());
+//    var member = memberService.create(registerRequest, account.getId(), address.getId());
+    var member = memberService.create(registerRequest, account, null);
+
     redisService.delete(CacheConstant.REGISTER_KEY, registerRequest.getEmail());
   }
 
@@ -323,8 +324,8 @@ public class AuthFacadeServiceImpl implements AuthFacadeService {
 
   private void handleFailedAttempt(String email, String accountId) {
     log.info("(handleFailedAttempt) email: {}", email);
-    Integer attempts = redisService.getOrDefault(CacheConstant.LOGIN_FAILED_ATTEMPT_KEY, email,
-        0);
+    Object attempt = redisService.getOrDefault(CacheConstant.LOGIN_FAILED_ATTEMPT_KEY, email, 0);
+    Integer attempts = Integer.parseInt(attempt.toString());
     attempts++;
     redisService.save(CacheConstant.LOGIN_FAILED_ATTEMPT_KEY, email, attempts);
 
@@ -352,10 +353,10 @@ public class AuthFacadeServiceImpl implements AuthFacadeService {
     ActivityLoginResponse loginResponse = new ActivityLoginResponse();
     loginResponse.setAccessToken(
         authTokenService.generateAccessToken(member.getId(), member.getEmail(),
-            account.getUsername()));
+            member.getRole(), account.getUsername()));
     loginResponse.setRefreshToken(
         authTokenService.generateRefreshToken(member.getId(), member.getEmail(),
-            account.getUsername()));
+            member.getRole(), account.getUsername()));
     loginResponse.setAccessTokenLifeTime(authTokenService.getAccessTokenLifeTime());
     loginResponse.setRefreshTokenLifeTime(authTokenService.getRefreshTokenLifeTime());
     return loginResponse;
